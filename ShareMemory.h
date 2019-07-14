@@ -28,9 +28,9 @@ class ShareMemory {
   int delShm();
 
 	//读
-	int shmRead(size_t len, char** readBuf);
+	int shareRead(size_t len, char** readBuf);
 	//写
-	int shmWrite(const char* writeBuf, size_t len);
+	int shareWrite(const char* writeBuf, size_t len);
 	
  private:
 	int m_shmID;	//共享内存id

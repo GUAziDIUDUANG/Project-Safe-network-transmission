@@ -41,14 +41,15 @@ int SecKeyShm::shmWrite(NodeShmInfo* pNodeInfo) {
 	//查找是否重
 	NodeShmInfo* tmp = (NodeShmInfo*)addr;
 	int i = 0;
+
 	for (i = 0; i < mMaxNode; ++i) {
-		bool retval = strcmp(tmp[i].clientID, 
-												 pNodeInfo->clientID)  &&
-									strcmp(tmp[i].serverID,
-												 pNodeInfo->serverID);
+		bool retval = (!strcmp(tmp[i].clientID, 
+												   pNodeInfo->clientID)  &&
+									 !strcmp(tmp[i].serverID,
+												   pNodeInfo->serverID));
 
 		//找到重复元素
-		if (false == retval) {
+		if (true == retval) {
 			printf("存在对应网点,现在覆盖\n");
 			memcpy(&tmp[i], pNodeInfo, sizeof(NodeShmInfo));	
 			break;
@@ -58,13 +59,16 @@ int SecKeyShm::shmWrite(NodeShmInfo* pNodeInfo) {
 	//没有重复
 	NodeShmInfo tmpNode;
 	memset(&tmpNode, 0, sizeof(tmpNode));
+
 	if (i == mMaxNode) {
 		//寻找空白区域
 		for (i = 0; i < mMaxNode; ++i) {
-			int retval = memcmp(&tmpNode, &tmp[i], sizeof(tmp));
-			if (0 == retval) {
+			if (0 == memcmp(&tmpNode, &tmp[i], sizeof(tmpNode))) {
 				printf("找到空白位置,现在写入共享内\n");
 				memcpy(&tmp[i], pNodeInfo, sizeof(pNodeInfo));
+				printf("[%s]\n", (&tmp[i])->serverID);
+				printf("[%s]\n", tmpNode.serverID);
+				printf("[%s]\n", pNodeInfo->serverID);
 				break;
 			}
 		}
@@ -77,6 +81,7 @@ int SecKeyShm::shmWrite(NodeShmInfo* pNodeInfo) {
 	
 	//3.解除关联共享内存
 	int retval = unmapShm();
+
 	if (0 != retval) {
 		printf("shmWrite: unmapShm failed...\n");
 		return 63;

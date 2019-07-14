@@ -133,7 +133,7 @@ int ShareMemory::delShm() {
 
 
 //读
-int ShareMemory::shmRead(size_t len, char** readBuf) {
+int ShareMemory::shareRead(size_t len, char** readBuf) {
 	//参数判断
 	if (0 == len) {
 		printf("shmRead: the parameter is invalid...\n");
@@ -156,7 +156,7 @@ int ShareMemory::shmRead(size_t len, char** readBuf) {
 
 
 //写
-int ShareMemory::shmWrite(const char* writeBuf, size_t len) {
+int ShareMemory::shareWrite(const char* writeBuf, size_t len) {
 	//参数判断
 	if (NULL == writeBuf || len == 0) {
 		printf("shmWrite: the parameter is invalid...\n");
