@@ -65,10 +65,7 @@ int SecKeyShm::shmWrite(NodeShmInfo* pNodeInfo) {
 		for (i = 0; i < mMaxNode; ++i) {
 			if (0 == memcmp(&tmpNode, &tmp[i], sizeof(tmpNode))) {
 				printf("找到空白位置,现在写入共享内\n");
-				memcpy(&tmp[i], pNodeInfo, sizeof(pNodeInfo));
-				printf("[%s]\n", (&tmp[i])->serverID);
-				printf("[%s]\n", tmpNode.serverID);
-				printf("[%s]\n", pNodeInfo->serverID);
+				memcpy(&tmp[i], pNodeInfo, sizeof(NodeShmInfo));
 				break;
 			}
 		}
@@ -112,7 +109,7 @@ int SecKeyShm::shmRead(char* clientID, char* serverID, NodeShmInfo* pNodeInfo) {
 	for (i = 0; i < mMaxNode; ++i) {
 		if (!strcmp(tmp[i].clientID, clientID) &&
 				!strcmp(tmp[i].serverID, serverID)) {
-			memcpy(pNodeInfo, tmp, sizeof(NodeShmInfo));
+			memcpy(pNodeInfo, &tmp[i], sizeof(NodeShmInfo));
 			break;
 		}
 	}

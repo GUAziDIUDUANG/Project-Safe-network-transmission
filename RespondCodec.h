@@ -1,28 +1,28 @@
-#ifndef __02_REQUESTCODEC_H__
-#define __02_REQUESTCODEC_H__
+#ifndef __02_RESPONDCODEC_H__
+#define __02_RESPONDCODEC_H__
 #define DISALLOW_COPY_AND_ASSIGN(Typename) \
         Typename(const Typename&) \
         void operator=(const Typename&)
 #include "Codec.h"
 
 //ÇëÇó±¨ÎÄ½á¹¹ÌåÀàĞÍ
-struct RequestMsg
+struct RespondMsg
 {
   //1 ÃÜÔ¿Ğ­ÉÌ  	//2 ÃÜÔ¿Ğ£Ñé; 	// 3 ÃÜÔ¿×¢Ïú
-  int	 cmdType;		// ±¨ÎÄÀàĞÍ 
-  char	 clientId[12];	// ¿Í»§¶Ë±àºÅ
-  char	 authCode[65];	// ÈÏÖ¤Âë
-  char	 serverId[12];	// ·şÎñÆ÷¶Ë±àºÅ 
-  char	 r1[64];			// ¿Í»§¶ËËæ»úÊı
+  int		 rv;						//¿¿¿ 
+  char	 clientId[12];	//¿¿¿¿¿
+  char	 serverId[12];	//¿¿¿¿¿
+  char	 r2[64];			  //¿¿¿¿¿¿
+	int    seckeyid;			//¿¿¿¿
 };
 
-class RequestCodec : public Codec {
+class RespondCodec : public Codec {
  public:
   //¹¹Ôì
-  RequestCodec();
-  explicit RequestCodec(RequestMsg* msg);
+  RespondCodec();
+  explicit RespondCodec(RespondMsg* msg);
   //Îö¹¹
-  ~RequestCodec();
+  ~RespondCodec();
 
 
   //±àÂë(ÖØĞ´)
@@ -34,10 +34,10 @@ class RequestCodec : public Codec {
 
  private:
   //ÇëÇó±¨ÎÄ½á¹¹Ìå
-  RequestMsg* mRequestMsg; 
+  RespondMsg* mRespondMsg; 
 
   //·ÀÖ¹×Ô¶¯Éú³É¿½±´¹¹ÔìºÍÖØÔØ¸³ÖµÔËËã·û
-  DISALLOW_COPY_AND_ASSIGN(RequestCodec);
+  DISALLOW_COPY_AND_ASSIGN(RespondCodec);
 };
 
 #endif
